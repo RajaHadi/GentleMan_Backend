@@ -13,6 +13,7 @@ from agents import (
 )
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Load environment variables
@@ -20,6 +21,14 @@ load_dotenv()
 
 # Initialize FastAPI
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://gentleman-shop.vercel.app/"],  # For testing; later replace with your frontend domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- Gemini Client and Model Configuration ---
 # IMPORTANT: The user wants to use Gemini. The API key should be for Google AI Studio.
