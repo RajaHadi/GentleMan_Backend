@@ -118,4 +118,6 @@ if __name__ == "__main__":
     # Clean up previous session database for a fresh start if it exists
     if os.path.exists("chat_history.db"):
         os.remove("chat_history.db")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+    port = int(os.environ.get("PORT", 8000))  # ✅ Use Railway-assigned port
+    uvicorn.run(app, host="0.0.0.0", port=port)
