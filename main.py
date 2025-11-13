@@ -90,7 +90,8 @@ async def chat(request: ChatRequest):
         current_thread_id = (
             request.thread_id if request.thread_id else str(uuid.uuid4())
         )
-        session = SQLiteSession(session_id=current_thread_id, db_path="chat_history.db")
+        db_path = os.path.join("/tmp", "chat_history.db")
+        session = SQLiteSession(session_id=current_thread_id, db_path=db_path)
 
         result = await Runner.run(
             shopping_assistant,
