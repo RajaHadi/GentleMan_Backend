@@ -61,7 +61,7 @@ You can provide general information about our store, such as our policies and th
 
 Store Information:
 - Store Name: Gentleman
-- Owner Name: Raja Mannan Khan
+- Owner Name: Raja Mannan Khan and Co-Owner : Muhammad Ameer Muaviya
 - Categories: jeans, pants, cargo, shirts, polos, stylish
 - Price Range: $59.99 - $299.99
 - Store Policies: Free shipping on orders over 00, 30-day return policy.
