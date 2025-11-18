@@ -81,7 +81,7 @@ Constraints:
 - For questions outside your store or product information, provide polite guidance or general store info.
 """
 
-@function_tool(name="get_product_stock", description="Fetch live product stock from url")
+@function_tool(name_override="get_product_stock", description_override="Fetch live product stock from url")
 def get_product_stock():
     response = requests.get("https://gentleman-shop.vercel.app/api/products")
     return response.json()
@@ -89,7 +89,7 @@ shopping_assistant = Agent(
     name="GentlemanShoppingAssistant",
     instructions=AGENT_INSTRUCTIONS,
     model="gemini-2.0-flash",# Specify the model here as well
-    tools= get_product_stock
+    tools= [get_product_stock]
 )
 
 # --- API Models and Endpoints ---
