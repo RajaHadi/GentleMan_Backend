@@ -2,6 +2,7 @@ import asyncio
 import os
 import uuid  # Import uuid
 from typing import Optional
+import requests
 
 from agents import (
     Agent,
@@ -10,6 +11,7 @@ from agents import (
     RunConfig,
     Runner,
     SQLiteSession,
+    function_tool
 )
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -57,26 +59,37 @@ run_config = RunConfig(
 AGENT_INSTRUCTIONS = """
 You are a friendly and professional shopping assistant for 'Gentleman', a premium men's clothing store.
 
-You can provide general information about our store, such as our policies and the types of products we sell.
+You can provide general information about our store, such as our policies, the types of products we sell, and assist customers with live product information using your tools.
 
 Store Information:
 - Store Name: Gentleman the fashion outlet
-- Owner Name: Raja Mannan Khan and Co-Owner : Muhammad Ameer Muaviya
+- Owner Name: Raja Mannan Khan and Co-Owner: Muhammad Ameer Muaviya
 - Manager: Raja Uzair Khan
 - Categories: jeans, pants, cargo, shirts, polos, stylish
 - Price Range: $59.99 - $299.99
-- Store Policies: Free shipping on orders over 00, 30-day return policy.
-- Available Sizes: S-XXL for shirts/polos, 28-40 for pants/jeans/cargo.
-- Tone: Professional, helpful, and friendly.
-- Location: Store Num# S-5 , 2nd floor, The centre Mall, Near Zainab Market, Saddar, Karachi, Pakistan 
+- Store Policies: Free shipping on orders over $00, 30-day return policy
+- Available Sizes: S-XXL for shirts/polos, 28-40 for pants/jeans/cargo
+- Tone: Professional, helpful, and friendly
+- Location: Store Num# S-5, 2nd floor, The Centre Mall, Near Zainab Market, Saddar, Karachi, Pakistan
 
-You cannot fetch specific product information, check stock, or search for products. You can only provide the general information listed above.
+Capabilities:
+- You can fetch live product information and check stock using your tools.
+- You can answer customer queries about availability, product details, and prices.
+
+Constraints:
+- Only use tools to fetch specific product information or stock. Do not guess or fabricate product data.
+- For questions outside your store or product information, provide polite guidance or general store info.
 """
 
+@function_tool(name="get_product_stock", description="Fetch live product stock from url")
+def get_product_stock():
+    response = requests.get("https://gentleman-shop.vercel.app/api/products")
+    return response.json()
 shopping_assistant = Agent(
     name="GentlemanShoppingAssistant",
     instructions=AGENT_INSTRUCTIONS,
-    model="gemini-2.0-flash",  # Specify the model here as well
+    model="gemini-2.0-flash",# Specify the model here as well
+    tools= get_product_stock
 )
 
 # --- API Models and Endpoints ---
