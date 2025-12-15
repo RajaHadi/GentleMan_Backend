@@ -1,5 +1,4 @@
 import asyncio
-import os
 import uuid  # Import uuid
 from typing import Optional
 import requests
@@ -35,7 +34,7 @@ app.add_middleware(
 # --- Gemini Client and Model Configuration ---
 # IMPORTANT: The user wants to use Gemini. The API key should be for Google AI Studio.
 # We are using the OpenAI SDK compatibility layer provided by Google.
-gemini_api_key = os.environ.get("GEMINI_API_KEY")
+gemini_api_key = "AIzaSyAa7esEnLbpjxI2yFXeBwHti9DIxYlrSxg"
 if not gemini_api_key:
     raise ValueError("GEMINI_API_KEY is not set in the .env file.")
 
